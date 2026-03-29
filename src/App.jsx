@@ -229,7 +229,7 @@ function App() {
   }, []);
   return (
     <main
-      className="max-w-md container mx-auto relative min-h-screen overflow-hidden "
+      className="max-w-md container mx-auto relative min-h-screen "
       dir="rtl"
     >
       <QueryClientProvider client={queryClient}>
