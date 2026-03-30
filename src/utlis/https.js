@@ -131,6 +131,7 @@ export const getSpecializations = async ({ token }) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log("token token", token);
 
     if (!response.ok) {
       const errorData = await response.json();

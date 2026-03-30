@@ -19,7 +19,10 @@ const Dashboard = () => {
   } = useQuery({
     queryKey: ["specializations"],
     queryFn: () => getSpecializations({ token }),
-    enabled: is_medical_service == "false",
+    enabled:
+      is_medical_service != true ||
+      is_medical_service != "true" ||
+      !is_medical_service,
   });
 
   if (is_medical_service == "true") {

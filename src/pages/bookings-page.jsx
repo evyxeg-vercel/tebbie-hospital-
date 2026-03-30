@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { arSA } from "date-fns/locale";
+import getMedicalStatus from "../utlis/get-medical-status";
 
 const BookingsPage = () => {
   const { BookId } = useParams();
@@ -21,21 +22,26 @@ const BookingsPage = () => {
 
   // ✅ New state for specialization filter
   const [activeSpecialization, setActiveSpecialization] = useState(null);
-
+  const is_medical_service = getMedicalStatus();
   const {
     data: DataBooking,
     isLoading,
     error,
   } = useQuery({
     queryKey: ["bookings", startDate, endDate, search],
-    enabled: true,
+    // enabled: true,
+    enabled:
+      is_medical_service != true ||
+      is_medical_service != "true" ||
+      !is_medical_service,
     queryFn: () => {
       const startYMD = startDate ? format(startDate, "yyyy-MM-dd") : null;
       const endYMD = endDate
         ? format(endDate, "yyyy-MM-dd")
         : startYMD
-        ? format(new Date(), "yyyy-MM-dd")
-        : null;
+          ? format(new Date(), "yyyy-MM-dd")
+          : null;
+
       return getAllBooking({
         token,
         id: BookId,
@@ -45,6 +51,8 @@ const BookingsPage = () => {
       });
     },
   });
+
+  console.log("DataBooking DataBooking", DataBooking);
 
   const { data: SpecializationsData } = useQuery({
     queryKey: ["AllSpecializations"],
@@ -92,7 +100,7 @@ const BookingsPage = () => {
           r.status,
           r.payment_status,
           r.price,
-        ].join(",")
+        ].join(","),
       ),
     ].join("\n");
 
@@ -132,14 +140,14 @@ const BookingsPage = () => {
 
   if (activeSpecialization) {
     filteredBookings = filteredBookings.filter(
-      (b) => b.doctor?.specialization_id === activeSpecialization
+      (b) => b.doctor?.specialization_id === activeSpecialization,
     );
   }
 
   const handleBookingClick = (booking) => {
     localStorage.setItem("selectedDate", JSON.stringify(booking));
     navigate(
-      `/specialization/booking/details/${booking.doctor.specialization_id}`
+      `/specialization/booking/details/${booking.doctor.specialization_id}`,
     );
     console.log(booking);
   };
