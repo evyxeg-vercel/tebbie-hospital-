@@ -144,7 +144,7 @@ const Booking = () => {
             {days.map((day) => {
               const dayKey = format(day, "yyyy-MM-dd");
               const bookingsForDay = bookings.filter(
-                (booking) => booking.date === dayKey
+                (booking) => booking.date === dayKey,
               );
 
               const isStartDay =

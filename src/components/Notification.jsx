@@ -11,7 +11,10 @@ const Notifications = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["notifications"],
     queryFn: () => getNotifications({ token }),
-    enabled: is_medical_service !== "true",
+    enabled:
+      is_medical_service != true ||
+      is_medical_service != "true" ||
+      !is_medical_service,
   });
   if (isLoading) {
     return <LoaderComponent />;
